@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Tu Aplicación</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f8f8f8;
+        }
+
+        nav {
+            background-color: #3498db;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav li {
+            display: inline;
+            margin-right: 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        section.destacado {
+            text-align: center;
+            padding: 50px 0;
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        section.destacado h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        section.destacado p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #e74c3c;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #333;
+            color: #fff;
+        }
+        .foto {
+        text-align: center;
+        background-color: #fff;
+        padding: 50px 0;
+    }
+
+    .foto-imagen {
+        max-width: 100%;  /* La imagen se ajustará al ancho máximo del contenedor */
+        height: auto;    /* La altura se ajustará automáticamente para mantener la proporción original */
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        margin-top: 20px;  /* Ajusta la distancia desde la parte superior */
+    }
+    </style>
+</head>
+<body>
+    <!-- Navegación -->
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/registro">Registrarse</a></li>
+            <li><a href="/login">Iniciar Sesión</a></li>
+        </ul>
+    </nav>
+
+    <!-- Sección Destacada -->
+    <section class="destacado">
+        <h2>Organiza tus tareas con facilidad</h2>
+        <p>Una aplicación intuitiva para mantenerte productivo.</p>
+        <a href="/registro" class="button">Registrarse</a>
+    </section>
+    <!-- Sección de la Foto -->
+    <section class="foto">
+        <img src="/static/foto_pagina.jpg" alt="El cocinero de los mugis" class="foto-imagen">
+    </section>
+
+    <!-- Pie de Página -->
+    <footer>
+        <!-- Contenido del pie de página -->
+    </footer>
+
+    <!-- Scripts de JavaScript si es necesario -->
+    <script src="ruta/a/tu/archivo/javascript.js"></script>
+</body>
+</html>

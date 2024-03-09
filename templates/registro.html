@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-size: cover; /* Ajustar la imagen para cubrir todo el fondo */
+            background-position: center; /* Centrar la imagen en el fondo */
+        }
+
+        .registro-container {
+            text-align: center;
+            margin-top: 50px;
+            background-color: rgba(255, 255, 255, 0.8); /* Color de fondo del contenedor con opacidad */
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2575b5;
+        }
+
+        .error-message {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="registro-container">
+    <h2>Registro</h2>
+    <p id="error-message" class="error-message"></p>
+    <form id="registro-form" action="/registro" method="post" onsubmit="return validarFormulario()">
+        <label for="nombre">Nombre de Usuario:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="contraseña">Contraseña:</label>
+        <input type="password" id="contraseña" name="contraseña" required>
+
+        <input type="submit" value="Registrar">
+    </form>
+</div>
+
+<script>
+    function validarFormulario() {
+        var nombreUsuario = document.getElementById('nombre').value;
+        var contraseña = document.getElementById('contraseña').value;
+        var errorMessage = document.getElementById('error-message');
+
+        // Verificar si el nombre de usuario tiene al menos 4 caracteres
+        if (nombreUsuario.length < 4) {
+            errorMessage.innerText = 'El nombre de usuario debe tener al menos 4 caracteres.';
+            return false; // Evita que el formulario se envíe
+        }
+
+        // Verificar si la contraseña tiene al menos 6 caracteres
+        if (contraseña.length < 6) {
+            errorMessage.innerText = 'La contraseña debe tener al menos 6 caracteres.';
+            return false; // Evita que el formulario se envíe
+        }
+
+        // Limpiar el mensaje de error si las validaciones son exitosas
+        errorMessage.innerText = '';
+        return true; // Permite que el formulario se envíe
+    }
+</script>
+
+</body>
+</html>

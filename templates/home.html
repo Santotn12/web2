@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tus Tareas</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .tareas-container {
+            text-align: center;
+            margin-top: 50px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        #nueva-tarea {
+            padding: 8px;
+            width: 60%;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        #agregar-tarea {
+            margin-top: 20px;
+            padding: 9px 15px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li {
+            background-color: #f5f5f5;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tarea-texto {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .boton-eliminar {
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .boton-eliminar:hover {
+            background-color: #c0392b;
+        }
+
+        .mensaje-tareas-vacias {
+            color: #555;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="tareas-container">
+    <h2>Tus Tareas Pendientes</h2>
+    
+    <form id="formulario-tarea">
+        <label for="nueva-tarea">Nueva Tarea:</label>
+        <input type="text" id="nueva-tarea" name="nueva-tarea" required autocomplete="off">
+        <input type="submit" id="agregar-tarea" value="Agregar Tarea">
+    </form>
+
+    <ul id="lista-tareas">
+        <!-- Tareas se agregarán aquí dinámicamente -->
+    </ul>
+
+    <p id="mensaje-tareas-vacias" class="mensaje-tareas-vacias">¿No hay tareas pendientes? ¡Genial! Disfruta tu día.</p>
+</div>
+
+<script>
+    // Datos de ejemplo (puedes obtener estos datos de tu servidor)
+    var tareas = [
+        { id: 1, texto: 'Hacer la tarea de programación' },
+        { id: 2, texto: 'Preparar la presentación para el trabajo en equipo' },
+        // Puedes agregar más tareas según sea necesario
+    ];
+
+    // Función para agregar tareas al DOM
+    function agregarTareasAlDOM() {
+    var listaTareas = document.getElementById('lista-tareas');
+    var mensajeTareasVacias = document.getElementById('mensaje-tareas-vacias');
+
+    // Limpiar la lista actual
+    listaTareas.innerHTML = '';
+
+    // Agregar cada tarea a la lista
+    tareas.forEach(function(tarea) {
+        var li = document.createElement('li');
+        li.id = 'tarea-' + tarea.id;
+
+        var divTexto = document.createElement('div');
+        divTexto.classList.add('tarea-texto');
+        divTexto.innerText = tarea.texto;
+
+        var botonEliminar = document.createElement('button');
+        botonEliminar.classList.add('boton-eliminar');
+        botonEliminar.innerText = 'Eliminar';
+        botonEliminar.onclick = function() {
+            eliminarTarea(tarea.id);
+        };
+
+        li.appendChild(divTexto);
+        li.appendChild(botonEliminar);
+        listaTareas.appendChild(li);
+    });
+
+    // Mostrar o ocultar el mensaje según si hay tareas o no
+    mensajeTareasVacias.style.display = tareas.length === 0 ? 'block' : 'none';
+}
+
+    // Función para eliminar una tarea
+    function eliminarTarea(id) {
+    // Añade lógica para confirmar la eliminación si es necesario
+
+    // Realiza una solicitud al servidor para eliminar la tarea
+    fetch('/eliminar_tarea', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ tarea_id: id })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data); // Puedes manejar la respuesta del servidor aquí
+
+        // Eliminar la tarea del array en el front-end
+        tareas = tareas.filter(tarea => tarea.id !== id);
+
+        // Actualizar la vista
+        agregarTareasAlDOM();
+    })
+    .catch(error => console.error('Error al eliminar tarea:', error));
+}
+    // Función para agregar una nueva tarea
+    function agregarNuevaTarea(texto) {
+    // Crear una nueva tarea
+    var nuevaTarea = {
+        id: Date.now(), // Usar una marca de tiempo como ID (puedes ajustarlo según tus necesidades)
+        texto: texto
+    };
+
+    // Agregar la nueva tarea a la lista
+    tareas.push(nuevaTarea);
+    // Llamar a la función para cargar tareas en la base de datos
+    cargarTareasEnBaseDeDatos();
+    agregarTareasAlDOM();
+
+    
+
+   
+}
+
+function cargarTareasEnBaseDeDatos() {
+    // Supongamos que 'tareas' es tu array actual
+    fetch('/cargar_tareas', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ tareas: tareas })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data); // Puedes manejar la respuesta del servidor aquí
+
+        // Actualizar la vista después de cargar las tareas
+        agregarTareasAlDOM();
+    })
+    .catch(error => console.error('Error al cargar tareas:', error));
+}
+        // Actualizar la vista
+        agregarTareasAlDOM();
+
+
+    // Capturar el evento de envío del formulario
+    document.getElementById('formulario-tarea').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evitar que se envíe el formulario de manera predeterminada
+
+        // Obtener el texto de la nueva tarea desde el campo de texto
+        var nuevaTareaTexto = document.getElementById('nueva-tarea').value;
+        
+        // Verificar si el texto no está vacío antes de agregar la tarea
+        if (nuevaTareaTexto.trim() !== '') {
+            // Agregar la nueva tarea
+            
+            agregarNuevaTarea(nuevaTareaTexto);
+           
+            // Limpiar el campo de texto después de agregar la tarea
+            document.getElementById('nueva-tarea').value = '';
+        }
+    });
+    function cargarTareasEnBaseDeDatos() {
+    // Supongamos que 'tareas' es tu array actual
+    fetch('/cargar_tareas', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ tareas: tareas })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data); // Puedes manejar la respuesta del servidor aquí
+    })
+    .catch(error => console.error('Error al cargar tareas:', error));
+}
+function cargarTareasDesdeServidor() {
+        fetch('/obtener_tareas')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.tareas && data.tareas.length > 0) {
+                    // Actualizar la lista de tareas en el front-end
+                    tareas = data.tareas;
+                    agregarTareasAlDOM();
+                }
+            })
+            .catch(error => console.error('Error al cargar tareas desde el servidor:', error));
+    }
+// Llama a esta función cuando quieras guardar las tareas en la base de datos
+
+    // Inicializar la vista con las tareas existentes
+    cargarTareasDesdeServidor();
+    agregarTareasAlDOM();
+    
+</script>
+
+</body>
+</html>
